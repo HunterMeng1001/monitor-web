@@ -1,0 +1,146 @@
+/* 主布局容器 */
+.mainLayout {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 顶部控制台 - 固定定位 */
+.topConsole {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  z-index: var(--z-sticky);
+  background-color: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 内容区域 */
+.contentArea {
+  display: flex;
+  margin-top: 60px; /* 为固定顶部控制台留出空间 */
+  height: calc(100vh - 60px); /* 减去顶部控制台高度 */
+}
+
+/* 左侧侧边栏 */
+.sidebar {
+  position: relative;
+  width: 300px;
+  flex-shrink: 0;
+  overflow-y: auto; /* 内容超出时允许垂直滚动 */
+  transition: width var(--transition-normal);
+  background-color: var(--color-bg-secondary);
+  border-right: 1px solid var(--color-border-primary);
+}
+
+/* 折叠状态下的侧边栏 */
+.sidebar.collapsed {
+  width: 60px; /* 折叠为图标栏 */
+}
+
+/* 折叠按钮 */
+.collapseButton {
+  position: absolute;
+  top: var(--spacing-4);
+  right: var(--spacing-2);
+  z-index: 15; /* 提高z-index，确保按钮始终可见 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-primary);
+  border: 1px solid var(--color-border-primary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-md); /* 添加阴影，提高可见性 */
+}
+
+.collapseButton:hover {
+  background-color: var(--color-surface-secondary);
+  border-color: var(--color-border-secondary);
+}
+
+.collapseButton:active {
+  transform: scale(0.95);
+}
+
+/* 右侧面板 */
+.rightPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden; /* 防止整个面板溢出 */
+}
+
+/* 系统状态区域 - 占右侧区域高度的30% */
+.systemStatus {
+  height: 30%; /* 占右侧区域高度的30% */
+  overflow: auto; /* 内容超出时允许横向/纵向滚动 */
+  flex-shrink: 0;
+}
+
+/* 主可视化区域 - 占右侧区域高度的70% */
+.mainVisualization {
+  height: 70%; /* 占右侧区域高度的70% */
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 移动端遮罩层 */
+.overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+/* 响应式断点 */
+/* 平板端 (768px - 1199px) */
+@media (max-width: 1199px) {
+  .sidebar {
+    position: relative;
+    z-index: 101;
+  }
+  
+  .sidebar.collapsed {
+    width: 60px;
+  }
+}
+
+/* 移动端 (<768px) */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 101;
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+  }
+  
+  .sidebar.mobileOpen {
+    transform: translateX(0);
+  }
+  
+  .sidebar.collapsed {
+    width: 280px; /* 移动端不使用折叠状态 */
+  }
+  
+  .collapseButton {
+    right: var(--spacing-4);
+  }
+}
